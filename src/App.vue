@@ -5,9 +5,8 @@ import SiteNavigation from "../src/components/SiteNavigation.vue";
 
 <template>
   <div class="flex flex-col min-h-screen font-Roboto bg-weather-primary">
-    <RouterView />
-    <!-- main file-->
     <SiteNavigation />
+    <RouterView />
   </div>
 </template>
 
