@@ -1,14 +1,17 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 const searchQuery = ref("");
 const queryTimeOut = ref(null);
 const searchErrors = ref(null);
 const apiKey = import.meta.env.VITE_API_KEY;
 const mapBoxReults = ref(null);
+const router = useRouter();
+
+// lazy-search
 const getSearchResults = () => {
   queryTimeOut.value = setTimeout(async () => {
-    // lazy-search
     clearTimeout(queryTimeOut.value);
     if (searchQuery.value !== "") {
       try {
@@ -24,6 +27,20 @@ const getSearchResults = () => {
     }
     mapBoxReults.value = null;
   }, 300);
+};
+
+const previewCity = (searchResults) => {
+  console.log(searchResults, "LOG");
+  const [city, state] = searchResults.place_name.split(",");
+  router.push({
+    name: "cityView",
+    params: { state: state.replaceAll(" ", ""), city: city },
+    query: {
+      lat: searchResults.geometry.coordinates[1],
+      lan: searchResults.geometry.coordinates[0],
+      preview: true,
+    },
+  });
 };
 </script>
 
@@ -50,6 +67,7 @@ const getSearchResults = () => {
             v-for="searchResults in mapBoxReults"
             :key="searchResults.id"
             class="py-2 cursor-pointer"
+            @click="previewCity(searchResults)"
           >
             {{ searchResults.place_name }}
           </li>
