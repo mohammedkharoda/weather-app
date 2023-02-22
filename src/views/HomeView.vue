@@ -3,6 +3,7 @@ import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import CityList from "../components/CityList.vue";
+import CityCardSkeleton from "../components/CityCardSkeleton.vue";
 const searchQuery = ref("");
 const queryTimeOut = ref(null);
 const searchErrors = ref(null);
@@ -79,7 +80,9 @@ const previewCity = (searchResults) => {
       <Suspense>
         <CityList />
         <template #fallback>
-          <p>Loading ...</p>
+          <p>
+            <CityCardSkeleton/>
+          </p>
         </template>
       </Suspense>
     </div>
